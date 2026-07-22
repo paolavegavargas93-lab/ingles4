@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MISAELVERSE // Ninja Actions - Ingles 7°</title>
+<style>
+  :root{
+    --bg:#0b0f1a;
+    --bg2:#141b2e;
+    --red:#ff3b3b;
+    --gold:#ffb020;
+    --red-dim: rgba(255,59,59,0.15);
+    --gold-dim: rgba(255,176,32,0.15);
+    --ok:#39ff88;
+    --bad:#ff4d4d;
+    --text:#f1f0ff;
+    --font-display:'Arial Black','Trebuchet MS',sans-serif;
+    --font-body:'Trebuchet MS','Verdana',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;}
+  body{
+    min-height:100vh;position:relative;
+    background-image:
+      radial-gradient(circle at 50% -10%, rgba(255,176,32,0.10), transparent 45%),
+      radial-gradient(circle at 90% 90%, rgba(255,59,59,0.08), transparent 45%);
+  }
+  #particles{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:0;}
+  .leaf{position:absolute;top:-5%;font-size:16px;opacity:0.5;animation:fall linear forwards;}
+  @keyframes fall{
+    from{transform:translateY(0) rotate(0deg);opacity:0.6;}
+    to{transform:translateY(115vh) rotate(360deg);opacity:0;}
+  }
+
+  /* ---------- FONDO LLAMATIVO (100% CSS, sin imagenes externas) ---------- */
+  #bg-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+  #bg-scene .sky{position:absolute;inset:0;background:linear-gradient(180deg,#0b0f1a 0%, #171d33 55%, #241432 100%);}
+  #bg-scene .moon-bg{
+    position:absolute;top:6%;left:50%;transform:translateX(-50%);
+    width:130px;height:130px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff6d8, #ffb020 70%);
+    box-shadow:0 0 90px 25px rgba(255,176,32,0.35);opacity:0.9;
+  }
+  #bg-scene .mountain-back{
+    position:absolute;bottom:0;left:0;width:100%;height:46%;background:#1b2038;opacity:0.9;
+    clip-path:polygon(0 60%,8% 28%,20% 55%,33% 18%,47% 50%,60% 22%,74% 54%,88% 26%,100% 48%,100% 100%,0 100%);
+  }
+  #bg-scene .mountain-front{
+    position:absolute;bottom:0;left:0;width:100%;height:34%;background:#11152a;
+    clip-path:polygon(0 70%,14% 34%,29% 64%,44% 22%,58% 58%,76% 28%,100% 52%,100% 100%,0 100%);
+  }
+  #bg-scene .torii{position:absolute;bottom:16%;left:50%;transform:translateX(-50%);width:200px;height:120px;}
+  #bg-scene .torii .beam-top{position:absolute;top:0;left:-14px;width:228px;height:14px;border-radius:2px;background:#5c1414;box-shadow:0 0 16px rgba(255,59,59,0.45);}
+  #bg-scene .torii .beam-mid{position:absolute;top:24px;left:6px;width:188px;height:11px;background:#4a1010;}
+  #bg-scene .torii .leg{position:absolute;top:24px;width:15px;height:96px;background:#5c1414;}
+  #bg-scene .torii .leg.left{left:26px;}
+  #bg-scene .torii .leg.right{right:26px;}
+  #bg-scene .treeline{
+    position:absolute;bottom:0;left:0;width:100%;height:12%;
+    background:
+      repeating-linear-gradient(115deg, #05060a 0 20px, transparent 20px 40px),
+      repeating-linear-gradient(65deg, #05060a 0 20px, transparent 20px 40px);
+    background-color:#080a12;opacity:0.95;
+  }
+  .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:0.15;}50%{opacity:1;}}
+
+  #app{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:18px 16px 60px;min-height:100vh;}
+  .screen{display:none;animation:fadeIn .5s ease;}
+  .screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .panel{
+    background:linear-gradient(180deg, rgba(20,27,46,0.94), rgba(11,15,26,0.97));
+    border:2px solid var(--red);
+    border-radius:8px;
+    box-shadow:0 0 20px var(--red-dim), inset 0 0 30px rgba(255,59,59,0.03);
+    padding:22px 20px;margin-bottom:16px;position:relative;
+    backdrop-filter:blur(2px);
+  }
+  .panel::before{
+    content:"";position:absolute;top:-2px;left:16px;right:16px;height:2px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  h1,h2,h3{font-family:var(--font-display);letter-spacing:1px;margin-top:0;}
+  h1.title{
+    color:var(--gold);font-size:clamp(24px,5.5vw,40px);
+    text-shadow:0 0 10px rgba(255,176,32,0.6), 2px 2px 0 var(--red);
+    text-align:center;
+  }
+  .tag{
+    display:inline-block;font-size:11px;letter-spacing:2px;color:var(--gold);
+    border:1px solid var(--gold);padding:2px 8px;border-radius:3px;
+    background:var(--gold-dim);margin-bottom:10px;
+  }
+  p, li, label{color:var(--text);line-height:1.55;font-size:15px;}
+  .muted{color:#b9c2e0;font-size:13px;}
+
+  input[type=text]{
+    width:100%;background:#0a0c10;border:1px solid var(--gold);color:var(--gold);
+    font-family:var(--font-body);font-size:15px;padding:10px 12px;border-radius:4px;margin-top:4px;outline:none;
+  }
+  input[type=text]:focus{box-shadow:0 0 10px var(--gold);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13px;color:var(--gold);letter-spacing:1px;margin-bottom:2px;}
+  .radio-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+  .radio-opt{
+    border:1px solid var(--gold);padding:8px 14px;border-radius:4px;cursor:pointer;font-size:14px;
+    background:rgba(255,176,32,0.05);transition:.15s;user-select:none;
+  }
+  .radio-opt.selected{background:var(--gold);color:#241600;font-weight:bold;box-shadow:0 0 12px var(--gold);}
+  .error-msg{color:var(--bad);font-size:13px;min-height:18px;margin-top:6px;}
+
+  button.btn{
+    font-family:var(--font-display);cursor:pointer;border:none;border-radius:4px;
+    padding:12px 22px;font-size:15px;letter-spacing:1px;font-weight:bold;transition:transform .12s, box-shadow .12s;
+  }
+  button.btn:active{transform:scale(0.96);}
+  .btn-primary{background:linear-gradient(90deg, var(--red), #b81f1f);color:#fff;box-shadow:0 0 14px var(--red-dim);}
+  .btn-primary:hover{box-shadow:0 0 22px var(--red);}
+  .btn-secondary{background:transparent;color:var(--gold);border:1px solid var(--gold);}
+  .btn-secondary:hover{background:var(--gold-dim);}
+  .btn-block{width:100%;}
+
+  .guide{
+    display:flex;gap:12px;align-items:flex-start;background:rgba(255,176,32,0.06);
+    border-left:3px solid var(--gold);padding:12px 14px;border-radius:4px;margin-bottom:16px;
+  }
+  .guide .avatar{font-size:34px;flex-shrink:0;filter:drop-shadow(0 0 6px var(--gold));}
+  .guide .txt{font-size:14px;color:#ffe9c2;}
+  .guide .name{color:var(--gold);font-weight:bold;letter-spacing:1px;font-size:12px;display:block;margin-bottom:3px;}
+
+  /* ---------- MAPA ---------- */
+  #map-wrap{
+    position:relative;width:100%;height:640px;border-radius:8px;overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 6%, rgba(255,176,32,0.18), transparent 20%),
+      linear-gradient(180deg, #101a33 0%, #0b0f1a 70%);
+    border:2px solid var(--gold);margin-bottom:14px;
+  }
+  #map-wrap .moon{
+    position:absolute;top:16px;left:50%;transform:translateX(-50%);
+    width:60px;height:60px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff6d8, var(--gold));
+    box-shadow:0 0 30px var(--gold);
+  }
+  svg.map-path{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;}
+  .station{
+    position:absolute;transform:translate(-50%,-50%);
+    width:46px;height:46px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;cursor:pointer;z-index:3;
+    border:3px solid var(--gold);background:#1a2340;
+    box-shadow:0 0 12px var(--gold-dim);
+    transition:.2s;
+  }
+  .station.locked{border-color:#4a5170;background:#161b2c;color:#5c6485;cursor:not-allowed;box-shadow:none;filter:grayscale(1);}
+  .station.current{animation:pulse 1.4s infinite;border-color:var(--red);box-shadow:0 0 20px var(--red);}
+  .station.done{border-color:var(--ok);box-shadow:0 0 14px var(--ok);}
+  @keyframes pulse{0%,100%{box-shadow:0 0 10px var(--red);}50%{box-shadow:0 0 26px var(--red);}}
+  /* Las estaciones ya no muestran texto con la accion: solo el icono, para no revelar la respuesta */
+  #ninja-marker{
+    position:absolute;font-size:30px;z-index:4;transition:left .6s ease, top .6s ease;
+    filter:drop-shadow(0 0 8px var(--red));transform:translate(-50%,-120%);
+  }
+
+  /* ---------- QUESTION ---------- */
+  .q-image{font-size:80px;text-align:center;margin:6px 0 14px;filter:drop-shadow(0 0 12px var(--gold-dim));}
+  .q-text{font-size:17px;text-align:center;margin-bottom:16px;color:var(--gold);font-weight:bold;}
+  .q-options{display:flex;flex-direction:column;gap:10px;}
+  .q-opt{
+    border:1px solid var(--gold);border-radius:4px;padding:12px;cursor:pointer;
+    background:rgba(255,176,32,0.04);font-size:14px;transition:.15s;
+  }
+  .q-opt:hover{background:var(--gold-dim);}
+  .q-opt.correct{background:rgba(57,255,136,0.2);border-color:var(--ok);color:var(--ok);}
+  .q-opt.wrong{background:rgba(255,77,77,0.2);border-color:var(--bad);color:var(--bad);}
+  .feedback-box{border-radius:4px;padding:10px 12px;margin-top:12px;font-size:14px;border:1px solid;display:none;}
+  .feedback-box.show{display:block;animation:fadeIn .3s ease;}
+  .feedback-box.ok{border-color:var(--ok);background:rgba(57,255,136,0.1);color:var(--ok);}
+  .feedback-box.bad{border-color:var(--bad);background:rgba(255,77,77,0.1);color:#ffb3b3;}
+
+  .score-pill{display:inline-block;border:1px solid var(--gold);border-radius:20px;padding:4px 14px;font-size:13px;color:var(--gold);margin-bottom:14px;}
+
+  /* ---------- FINAL ---------- */
+  #confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:20;}
+  .confetti{position:absolute;top:-5%;width:9px;height:14px;opacity:0.9;animation:confettiFall linear forwards;}
+  @keyframes confettiFall{
+    from{transform:translateY(0) rotate(0deg);}
+    to{transform:translateY(110vh) rotate(540deg);}
+  }
+  h1.congrats{
+    text-align:center;font-family:var(--font-display);
+    font-size:clamp(30px,8vw,54px);
+    background:linear-gradient(90deg, var(--gold), #fff, var(--red));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:bounce 1s infinite;
+    text-shadow:none;
+  }
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  table.summary{width:100%;border-collapse:collapse;margin:14px 0;}
+  table.summary td{padding:6px 8px;border-bottom:1px dashed rgba(255,176,32,0.3);font-size:14px;}
+  table.summary td:first-child{color:var(--gold);width:40%;}
+  .concept-list{list-style:none;padding:0;margin:10px 0;}
+  .concept-list li{padding:8px 10px;margin-bottom:6px;border-left:3px solid var(--gold);background:rgba(255,176,32,0.05);font-size:14px;border-radius:2px;}
+  .level-badge{font-size:20px;font-weight:bold;padding:6px 16px;border-radius:6px;display:inline-block;margin:6px 0 14px;}
+  .level-experto{color:var(--ok);border:1px solid var(--ok);background:rgba(57,255,136,0.1);}
+  .level-intermedio{color:var(--gold);border:1px solid var(--gold);background:rgba(255,176,32,0.1);}
+  .level-principiante{color:var(--red);border:1px solid var(--red);background:rgba(255,59,59,0.1);}
+
+  footer.misael{text-align:center;font-size:11px;color:#6d7699;letter-spacing:2px;margin-top:26px;}
+
+  /* ---------- RETO (minijuego runner) ---------- */
+  #reto-hud{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  #reto-lives{font-size:18px;letter-spacing:2px;}
+  #reto-progress-wrap{flex:1;min-width:140px;height:12px;border:1px solid var(--gold);border-radius:8px;background:rgba(255,176,32,0.08);overflow:hidden;}
+  #reto-progress{height:100%;width:0%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .15s linear;}
+  #game-canvas{
+    display:block;width:100%;height:auto;border:2px solid var(--gold);border-radius:8px;
+    background:linear-gradient(180deg,#0b0f1a 0%,#171d33 60%,#241432 100%);
+    box-shadow:0 0 22px var(--gold-dim);touch-action:manipulation;cursor:pointer;
+  }
+  #reto-msg{text-align:center;margin-top:10px;font-size:14px;color:#b9c2e0;min-height:20px;}
+  #reto-controls{display:flex;gap:10px;margin-top:12px;}
+  .ctrl-btn{
+    flex:1;padding:16px 8px;font-size:16px;font-weight:bold;font-family:var(--font-display);
+    letter-spacing:1px;border-radius:8px;cursor:pointer;user-select:none;-webkit-user-select:none;
+    touch-action:manipulation;border:2px solid var(--gold);color:var(--gold);
+    background:rgba(255,176,32,0.08);
+  }
+  .ctrl-btn:active, .ctrl-btn.held{background:var(--gold);color:#0b0f1a;}
+  #btn-duck{border-color:var(--red);color:var(--red);background:rgba(255,59,59,0.08);}
+  #btn-duck:active, #btn-duck.held{background:var(--red);color:#fff;}
+  #reto-overlay{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(11,15,26,0.82);border-radius:8px;text-align:center;padding:16px;z-index:2;
+  }
+  #reto-overlay h2{color:var(--gold);text-shadow:0 0 12px rgba(255,176,32,0.5);margin-bottom:6px;}
+  #reto-overlay p{font-size:14px;max-width:420px;}
+  #reto-overlay.hidden{display:none;}
+  #canvas-holder{position:relative;}
+  #btn-music{
+    position:fixed;top:12px;right:12px;z-index:30;
+    width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);
+    background:rgba(11,15,26,0.85);color:var(--gold);font-size:20px;cursor:pointer;
+    box-shadow:0 0 12px var(--gold-dim);
+  }
+  #btn-music.off{border-color:#4a5170;color:#5c6485;box-shadow:none;}
+
+  @media (max-width:520px){
+    #map-wrap{height:780px;}
+    .station{width:38px;height:38px;font-size:16px;}
+    #ninja-marker{font-size:22px;}
+    #bg-scene .moon-bg{width:80px;height:80px;}
+  }
+</style>
+</head>
+<body>
+<div id="bg-scene">
+  <div class="sky"></div>
+  <div class="moon-bg"></div>
+  <div class="mountain-back"></div>
+  <div class="mountain-front"></div>
+  <div class="torii">
+    <div class="beam-top"></div>
+    <div class="beam-mid"></div>
+    <div class="leg left"></div>
+    <div class="leg right"></div>
+  </div>
+  <div class="treeline"></div>
+  <div id="stars-holder"></div>
+</div>
+<div id="particles"></div>
+<div id="confetti-wrap"></div>
+<button id="btn-music" class="off" title="Música">🔇</button>
+<div id="app">
+
+  <!-- ============ 0. REGISTRO ============ -->
+  <section id="screen-registro" class="screen active">
+    <div class="panel">
+      <span class="tag">MISAELVERSE // DOJO DEL VIAJERO</span>
+      <h1 class="title">ENTRENAMIENTO NINJA</h1>
+      <div class="guide">
+        <div class="avatar">🥷</div>
+        <div class="txt"><span class="name">SENSEI-8 // GUÍA DEL MISAELVERSE</span>
+        Bienvenido, aprendiz. Antes de cruzar el portal hacia el Bosque de las Acciones, el Dojo necesita registrar tu identidad.</div>
+      </div>
+      <div class="field">
+        <label for="inp-nombre">NOMBRE DEL ESTUDIANTE</label>
+        <input type="text" id="inp-nombre" placeholder="Escribe tu nombre completo" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="inp-curso">CURSO</label>
+        <input type="text" id="inp-curso" placeholder="Ej: 7-A" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>JORNADA</label>
+        <div class="radio-group" id="jornada-group">
+          <div class="radio-opt" data-val="Mañana">Mañana</div>
+          <div class="radio-opt" data-val="Tarde">Tarde</div>
+          <div class="radio-opt" data-val="Noche">Noche</div>
+        </div>
+      </div>
+      <div class="error-msg" id="registro-error"></div>
+      <button class="btn btn-primary btn-block" id="btn-registrar">ENTRAR AL DOJO ⚡</button>
+    </div>
+  </section>
+
+  <!-- ============ 1. INICIO ============ -->
+  <section id="screen-inicio" class="screen">
+    <div class="panel">
+      <span class="tag">MISAELVERSE // BOSQUE DE LAS ACCIONES</span>
+      <h1 class="title">NINJA ACTIONS</h1>
+      <p class="muted" style="text-align:center;">Inglés · Grado Séptimo</p>
+      <div class="guide">
+        <div class="avatar">🥷</div>
+        <div class="txt"><span class="name">SENSEI-8</span>
+        <span id="bienvenida-nombre"></span>, tu misión es guiar a Kaito, un joven ninja del MISAELVERSE, por <span id="stations-count-text">varias</span> estaciones de entrenamiento en el Bosque de las Acciones.</div>
+      </div>
+      <h3>🎯 ¿Qué vas a aprender?</h3>
+      <p>Vocabulario de acciones diarias y de tiempo libre en inglés (run, jump, climb, swim, sleep, eat, dance, study, cook, walk, play, sing, write, listen to music), combinado con <b>adverbios de frecuencia</b> (always, usually, often, sometimes, never) y el <b>presente simple</b>, como en: "Kaito usually plays video games in his free time."</p>
+      <h3>🕹️ ¿Cómo se juega?</h3>
+      <p>1. Toca la estación iluminada del mapa (en orden).<br>
+         2. <b>Supera el RETO NINJA:</b> cada estación es una pista diferente (bambúzal, río, cueva, aldea, nieve...). Haz que Kaito <b>SALTE</b> (toque, ESPACIO o botón ⬆) los obstáculos del suelo y se <b>AGACHE</b> (mantener ⬇, flecha abajo o deslizar hacia abajo) para pasar bajo los halcones 🦅, como en el juego del dinosaurio. ¡Cada pista es más rápida y con más obstáculos que la anterior!<br>
+         3. Al cruzar la puerta se desbloquea la pregunta. Hay varios tipos: elegir la oración correcta, completar el verbo, el significado del adverbio y hacer preguntas con Do/Does. ¡Nunca sale la misma dos veces!<br>
+         4. ✔ Si respondes bien, sumas 10 puntos y avanzas. ✘ Si respondes mal, Kaito se devuelve: debes <b>repetir la pista</b> de esa estación y responder una pregunta NUEVA.<br>
+         5. 🔊 Usa el botón de la esquina para activar o silenciar la música ninja.</p>
+      <button class="btn btn-primary btn-block" id="btn-empezar">ENTRAR AL BOSQUE 🌲</button>
+    </div>
+  </section>
+
+  <!-- ============ 2. MAPA ============ -->
+  <section id="screen-mapa" class="screen">
+    <div class="panel">
+      <span class="tag">BOSQUE DE LAS ACCIONES</span>
+      <div class="score-pill" id="mapa-score">Puntaje: 0 / 80</div>
+      <div id="map-wrap">
+        <div class="moon"></div>
+        <svg class="map-path" id="map-svg"></svg>
+        <div id="stations-holder"></div>
+        <div id="ninja-marker">🥷</div>
+      </div>
+      <p class="muted" style="text-align:center;">Toca la estación iluminada para continuar el entrenamiento.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2a. RETO NINJA (minijuego) ============ -->
+  <section id="screen-reto" class="screen">
+    <div class="panel">
+      <span class="tag" id="reto-tag">RETO NINJA</span>
+      <div id="reto-hud">
+        <span id="reto-lives">❤️❤️❤️</span>
+        <div id="reto-progress-wrap"><div id="reto-progress"></div></div>
+        <span class="muted" id="reto-dist">0 m</span>
+      </div>
+      <div id="canvas-holder">
+        <canvas id="game-canvas" width="800" height="340"></canvas>
+        <div id="reto-overlay">
+          <h2 id="reto-ov-title">🥷 RETO NINJA</h2>
+          <p id="reto-ov-text">Kaito debe atravesar el bosque en sigilo. Toca la pantalla o presiona ESPACIO para saltar los obstáculos. ¡Llega a la puerta torii para desbloquear la pregunta!</p>
+          <button class="btn btn-primary" id="btn-reto-start">COMENZAR ⚡</button>
+        </div>
+      </div>
+      <div id="reto-controls">
+        <button class="ctrl-btn" id="btn-jump">⬆ SALTAR</button>
+        <button class="ctrl-btn" id="btn-duck">⬇ AGACHARSE</button>
+      </div>
+      <div id="reto-msg">Toque / ESPACIO / ⬆ = saltar (x2 doble salto) · mantener ⬇ o deslizar abajo = agacharse bajo los halcones 🦅</div>
+    </div>
+  </section>
+
+  <!-- ============ 2b. PREGUNTA ============ -->
+  <section id="screen-question" class="screen">
+    <div class="panel">
+      <span class="tag" id="q-tag">ESTACIÓN</span>
+      <div class="q-image" id="q-image"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-options" id="q-options"></div>
+      <div class="feedback-box" id="q-feedback"></div>
+      <button class="btn btn-primary btn-block" id="btn-q-continue" style="display:none;margin-top:14px;">VOLVER AL MAPA 🗺️</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. FINAL ============ -->
+  <section id="screen-final" class="screen">
+    <div class="panel">
+      <h1 class="congrats">CONGRATULATIONS!</h1>
+      <p class="muted" style="text-align:center;">🥷 Has completado el entrenamiento en el Bosque de las Acciones del MISAELVERSE</p>
+      <table class="summary" id="final-table"></table>
+      <div id="final-level"></div>
+      <h3>📚 Vocabulario que dominaste:</h3>
+      <ul class="concept-list" id="final-concepts"></ul>
+      <div class="guide">
+        <div class="avatar">🥷</div>
+        <div class="txt"><span class="name">SENSEI-8</span><span id="final-message"></span></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="btn-reiniciar">ENTRENAR OTRA VEZ 🔁</button>
+    </div>
+    <footer class="misael">MISAELVERSE · NODO EDUCATIVO 05 · NINJA ACTIONS</footer>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   MISAELVERSE - NINJA ACTIONS
+   Estado en memoria (NUNCA localStorage/sessionStorage)
+   ========================================================= */
+const state = {
+  student: { nombre:'', curso:'', jornada:'' },
+  score: 0,
+  maxScore: 0,
+  concepts: new Set(),
+  completed: new Set(),
+  currentStation: 0
+};
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------- hojas cayendo (decoracion) ---------- */
+function spawnLeaf(){
+  const el = document.createElement('div');
+  el.className = 'leaf';
+  const leaves = ['🍃','🍂','⚡'];
+  el.textContent = leaves[Math.floor(Math.random()*leaves.length)];
+  el.style.left = Math.random()*100 + 'vw';
+  const dur = 6 + Math.random()*8;
+  el.style.animationDuration = dur + 's';
+  document.getElementById('particles').appendChild(el);
+  setTimeout(()=>el.remove(), dur*1000);
+}
+setInterval(spawnLeaf, 900);
+for(let i=0;i<6;i++) setTimeout(spawnLeaf, i*400);
+
+/* ---------- sonido sintetizado, sin archivos externos ---------- */
+let audioCtx;
+function playTone(type){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    if(type === 'ok'){
+      o.type='sine'; o.frequency.setValueAtTime(660, audioCtx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(990, audioCtx.currentTime+0.15);
+    } else if(type === 'select'){
+      o.type='triangle'; o.frequency.setValueAtTime(420, audioCtx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(560, audioCtx.currentTime+0.08);
+    } else {
+      o.type='sawtooth'; o.frequency.setValueAtTime(180, audioCtx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(90, audioCtx.currentTime+0.2);
+    }
+    g.gain.setValueAtTime(type==='select' ? 0.1 : 0.15, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (type==='select'?0.12:0.25));
+    o.start(); o.stop(audioCtx.currentTime + (type==='select'?0.13:0.26));
+  }catch(e){ /* audio no disponible */ }
+}
+
+/* ---------- estrellas titilando en el fondo (decoracion, sin imagenes externas) ---------- */
+function spawnStars(count){
+  const holder = document.getElementById('stars-holder');
+  for(let i=0;i<count;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = 1 + Math.random()*2;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random()*100 + '%';
+    s.style.top = Math.random()*55 + '%';
+    s.style.animationDuration = (2 + Math.random()*3) + 's';
+    s.style.animationDelay = (Math.random()*3) + 's';
+    holder.appendChild(s);
+  }
+}
+spawnStars(60);
+
+function showFeedback(id, ok, msg){
+  const el = document.getElementById(id);
+  el.className = 'feedback-box show ' + (ok?'ok':'bad');
+  el.textContent = (ok?'✔ ':'✘ ') + msg;
+}
+function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+/* =========================================================
+   0. REGISTRO
+   ========================================================= */
+let jornadaSel = '';
+document.querySelectorAll('#jornada-group .radio-opt').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    document.querySelectorAll('#jornada-group .radio-opt').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    jornadaSel = opt.dataset.val;
+  });
+});
+document.getElementById('btn-registrar').addEventListener('click', ()=>{
+  const nombre = document.getElementById('inp-nombre').value.trim();
+  const curso = document.getElementById('inp-curso').value.trim();
+  const errorEl = document.getElementById('registro-error');
+  if(!nombre || !curso || !jornadaSel){
+    errorEl.textContent = '⚠ Completa los 3 campos (nombre, curso y jornada) para entrar al Dojo.';
+    return;
+  }
+  errorEl.textContent = '';
+  state.student.nombre = nombre;
+  state.student.curso = curso;
+  state.student.jornada = jornadaSel;
+  document.getElementById('bienvenida-nombre').textContent = nombre + ',';
+  showScreen('screen-inicio');
+});
+
+document.getElementById('btn-empezar').addEventListener('click', ()=>{
+  buildMap();
+  showScreen('screen-mapa');
+});
+
+/* =========================================================
+   ESTACIONES / DATOS DEL JUEGO
+   ========================================================= */
+/* Cada estacion trae lo necesario para construir una oracion en presente simple
+   con adverbio de frecuencia, en vez de mostrar la palabra directamente. */
+const freqCycle = ['always','usually','often','sometimes','never'];
+
+const stationsRaw = [
+  {verb:'run',   thirdPerson:'runs',    icon:'🏃', phrase:'in the park',                 x:10, y:92},
+  {verb:'jump',  thirdPerson:'jumps',   icon:'🤸', phrase:'on the trampoline',            x:82, y:86},
+  {verb:'climb', thirdPerson:'climbs',  icon:'🧗', phrase:'the mountain',                 x:14, y:78},
+  {verb:'swim',  thirdPerson:'swims',   icon:'🏊', phrase:'in the river',                 x:82, y:70},
+  {verb:'sleep', thirdPerson:'sleeps',  icon:'😴', phrase:'eight hours a day',            x:12, y:62},
+  {verb:'eat',   thirdPerson:'eats',    icon:'🍙', phrase:'a big breakfast',              x:80, y:54},
+  {verb:'dance', thirdPerson:'dances',  icon:'💃', phrase:'at parties',                   x:16, y:46},
+  {verb:'study', thirdPerson:'studies', icon:'📖', phrase:'English after school',         x:78, y:38},
+  {verb:'cook',  thirdPerson:'cooks',   icon:'🍳', phrase:'dinner for his family',        x:18, y:31},
+  {verb:'walk',  thirdPerson:'walks',   icon:'🚶', phrase:'to school',                    x:76, y:24},
+  {verb:'play',  thirdPerson:'plays',   icon:'🎮', phrase:'video games in his free time', x:22, y:18},
+  {verb:'sing',  thirdPerson:'sings',   icon:'🎤', phrase:'in the shower',                x:78, y:12},
+  {verb:'write', thirdPerson:'writes',  icon:'✍️', phrase:'stories in his free time',     x:30, y:6},
+  {verb:'listen to music', thirdPerson:'listens to music', icon:'🎧', phrase:'in his free time', x:66, y:2}
+];
+
+const stations = stationsRaw.map((s, i)=>{
+  return { id:i, verb:s.verb, thirdPerson:s.thirdPerson, icon:s.icon, x:s.x, y:s.y, phrase:s.phrase, lastType:-1 };
+});
+
+/* =========================================================
+   BANCO DE PREGUNTAS DINÁMICO
+   Cada intento genera una pregunta diferente combinando:
+   personaje, adverbio de frecuencia y 4 tipos de pregunta.
+   ========================================================= */
+const SUBJECTS = [
+  {name:'Kaito',           third:true,  poss:'his',   pron:'he'},
+  {name:'Hana',            third:true,  poss:'her',   pron:'she'},
+  {name:'The ninjas',      third:false, poss:'their', pron:'they'},
+  {name:'Kaito and Hana',  third:false, poss:'their', pron:'they'}
+];
+const FREQS = [
+  {en:'always',    es:'siempre'},
+  {en:'usually',   es:'usualmente / normalmente'},
+  {en:'often',     es:'a menudo / con frecuencia'},
+  {en:'sometimes', es:'a veces'},
+  {en:'never',     es:'nunca'}
+];
+const GERUNDS = {run:'running', swim:'swimming', dance:'dancing', write:'writing', 'listen to music':'listening to music'};
+function gerundOf(v){ return GERUNDS[v] || (v + 'ing'); }
+function phraseFor(st, subj){ return st.phrase.replace(/\bhis\b/g, subj.poss); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* Genera una pregunta nueva para la estación (evita repetir el tipo anterior) */
+function buildQuestion(st){
+  let type = Math.floor(Math.random()*4);
+  if(type === st.lastType) type = (type + 1 + Math.floor(Math.random()*3)) % 4;
+  st.lastType = type;
+
+  const subj = pick(SUBJECTS);
+  const freq = pick(FREQS);
+  const vOK  = subj.third ? st.thirdPerson : st.verb;    // forma correcta
+  const vBAD = subj.third ? st.verb : st.thirdPerson;    // error de conjugación
+  const ph   = phraseFor(st, subj);
+  const correctSentence = capitalize(subj.name + ' ' + freq.en + ' ' + vOK + ' ' + ph + '.');
+
+  if(type === 0){
+    /* Elegir la oración correcta */
+    return {
+      text: 'Which sentence is correct?',
+      options: [
+        {t: correctSentence, ok:true},
+        {t: capitalize(subj.name + ' ' + vOK + ' ' + freq.en + ' ' + ph + '.'), ok:false},
+        {t: capitalize(subj.name + ' ' + freq.en + ' ' + vBAD + ' ' + ph + '.'), ok:false}
+      ],
+      explainOk: '¡Correcto! El adverbio "' + freq.en + '" va antes del verbo, y con "' + subj.pron + '" el verbo es "' + vOK + '": "' + correctSentence + '"',
+      explainBad: 'La correcta era: "' + correctSentence + '". El adverbio de frecuencia va ANTES del verbo, y con "' + subj.pron + '" el verbo es "' + vOK + '".'
+    };
+  }
+  if(type === 1){
+    /* Completar el espacio con la forma del verbo */
+    const blank = capitalize(subj.name + ' ' + freq.en + ' ____ ' + ph + '.');
+    return {
+      text: 'Complete the sentence:\n' + blank,
+      options: shuffleForms([
+        {t: vOK, ok:true},
+        {t: vBAD, ok:false},
+        {t: gerundOf(st.verb), ok:false}
+      ]),
+      explainOk: '¡Correcto! Con "' + subj.pron + '" en presente simple el verbo es "' + vOK + '": "' + correctSentence + '"',
+      explainBad: 'Con "' + subj.pron + '" el verbo correcto es "' + vOK + '" (' + (subj.third ? 'tercera persona: lleva -s' : 'sujeto plural: SIN -s') + '). La oración era: "' + correctSentence + '"'
+    };
+  }
+  if(type === 2){
+    /* Significado del adverbio */
+    const wrong = FREQS.filter(f=>f.en !== freq.en);
+    const w1 = pick(wrong);
+    let w2 = pick(wrong);
+    while(w2.en === w1.en) w2 = pick(wrong);
+    return {
+      text: 'In the sentence "' + correctSentence + '", what does "' + freq.en + '" mean in Spanish?',
+      options: [
+        {t: freq.es, ok:true},
+        {t: w1.es, ok:false},
+        {t: w2.es, ok:false}
+      ],
+      explainOk: '¡Correcto! "' + freq.en + '" significa "' + freq.es + '".',
+      explainBad: '"' + freq.en + '" significa "' + freq.es + '". Repasa los adverbios: always=siempre, usually=usualmente, often=a menudo, sometimes=a veces, never=nunca.'
+    };
+  }
+  /* type 3: forma interrogativa con Do/Does */
+  const aux = subj.third ? 'Does' : 'Do';
+  const auxBad = subj.third ? 'Do' : 'Does';
+  const correctQ = aux + ' ' + subj.name + ' ' + st.verb + ' ' + ph + '?';
+  return {
+    text: 'How do you ask this question correctly? (' + subj.name + ' / ' + st.verb + ')',
+    options: [
+      {t: correctQ, ok:true},
+      {t: auxBad + ' ' + subj.name + ' ' + st.verb + ' ' + ph + '?', ok:false},
+      {t: aux + ' ' + subj.name + ' ' + st.thirdPerson + ' ' + ph + '?', ok:false}
+    ],
+    explainOk: '¡Correcto! Las preguntas usan "' + aux + '" con "' + subj.pron + '" y el verbo en forma base: "' + correctQ + '"',
+    explainBad: 'La correcta era: "' + correctQ + '". Con "' + subj.pron + '" se usa "' + aux + '" y el verbo queda en forma base (sin -s).'
+  };
+}
+function shuffleForms(a){ return a; } // las opciones se barajan al mostrarse
+
+state.maxScore = stations.length * 10;
+document.getElementById('mapa-score').textContent = 'Puntaje: 0 / ' + state.maxScore;
+document.getElementById('stations-count-text').textContent = stations.length;
+
+function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
+
+/* =========================================================
+   MAPA - construccion y navegacion
+   ========================================================= */
+function buildMap(){
+  const holder = document.getElementById('stations-holder');
+  const svg = document.getElementById('map-svg');
+  holder.innerHTML = '';
+  svg.innerHTML = '';
+
+  // dibujar el camino punteado entre estaciones
+  let pathD = '';
+  stations.forEach((s,i)=>{
+    pathD += (i===0 ? 'M ' : 'L ') + s.x + ' ' + s.y + ' ';
+  });
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d', pathD.trim());
+  path.setAttribute('stroke', '#ffb020');
+  path.setAttribute('stroke-width', '0.6');
+  path.setAttribute('stroke-dasharray', '2,2');
+  path.setAttribute('fill', 'none');
+  path.setAttribute('opacity', '0.5');
+  path.setAttribute('vector-effect', 'non-scaling-stroke');
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.setAttribute('preserveAspectRatio', 'none');
+  svg.appendChild(path);
+
+  stations.forEach((s, i)=>{
+    const d = document.createElement('div');
+    d.className = 'station';
+    d.style.left = s.x + '%';
+    d.style.top = s.y + '%';
+    d.textContent = s.icon;
+    d.dataset.id = s.id;
+
+    if(state.completed.has(s.id)){
+      d.classList.add('done');
+      d.textContent = '✅';
+    } else if(i === state.currentStation){
+      d.classList.add('current');
+    } else {
+      d.classList.add('locked');
+    }
+
+    d.addEventListener('click', ()=>{
+      if(state.completed.has(s.id)) return;
+      if(i !== state.currentStation) return;
+      playTone('select');
+      openChallenge(s);
+    });
+
+    holder.appendChild(d);
+  });
+
+  // ubicar al ninja en la estacion actual (o la ultima completada)
+  const marker = document.getElementById('ninja-marker');
+  const target = stations[Math.min(state.currentStation, stations.length-1)];
+  marker.style.left = target.x + '%';
+  marker.style.top = target.y + '%';
+}
+
+function openQuestion(station){
+  const q = buildQuestion(station);
+  state.lastAnswerOk = false;
+  state.pendingStation = station;
+
+  document.getElementById('q-tag').textContent = 'ESTACIÓN ' + (station.id+1) + ' / ' + stations.length;
+  document.getElementById('q-image').textContent = station.icon;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-feedback').className = 'feedback-box';
+  const btnCont = document.getElementById('btn-q-continue');
+  btnCont.style.display = 'none';
+
+  const options = shuffle(q.options);
+  const cont = document.getElementById('q-options');
+  cont.innerHTML = '';
+  cont.dataset.locked = '0';
+
+  const correctText = q.options.find(o=>o.ok).t;
+
+  options.forEach(o=>{
+    const b = document.createElement('div');
+    b.className = 'q-opt';
+    b.textContent = o.t;
+    b.addEventListener('click', ()=>{
+      if(cont.dataset.locked === '1') return;
+      cont.dataset.locked = '1';
+      cont.querySelectorAll('.q-opt').forEach(x=>{
+        if(x.textContent === correctText) x.classList.add('correct');
+      });
+      if(o.ok){
+        /* ---- CORRECTO: suma puntos y avanza ---- */
+        state.lastAnswerOk = true;
+        b.classList.add('correct');
+        playTone('ok');
+        state.score += 10;
+        state.concepts.add(correctText);
+        showFeedback('q-feedback', true, q.explainOk);
+        state.completed.add(station.id);
+        state.currentStation = Math.max(state.currentStation, station.id+1);
+        btnCont.textContent = 'VOLVER AL MAPA 🗺️';
+      } else {
+        /* ---- INCORRECTO: se devuelve a repetir el reto ---- */
+        state.lastAnswerOk = false;
+        b.classList.add('wrong');
+        playTone('bad');
+        showFeedback('q-feedback', false, q.explainBad + ' 🥷 Kaito debe repetir la pista "' + TRACK_THEMES[station.id % TRACK_THEMES.length].name + '" y responder una NUEVA pregunta.');
+        btnCont.textContent = 'REPETIR EL RETO 🔁';
+      }
+      document.getElementById('mapa-score').textContent = 'Puntaje: ' + state.score + ' / ' + state.maxScore;
+      btnCont.style.display = 'block';
+    });
+    cont.appendChild(b);
+  });
+
+  showScreen('screen-question');
+}
+
+document.getElementById('btn-q-continue').addEventListener('click', ()=>{
+  if(!state.lastAnswerOk){
+    /* respuesta incorrecta: devolverse a la pista de esa estación */
+    openChallenge(state.pendingStation);
+    return;
+  }
+  if(state.completed.size >= stations.length){
+    buildFinalScreen();
+    showScreen('screen-final');
+    launchConfetti();
+  } else {
+    buildMap();
+    showScreen('screen-mapa');
+  }
+});
+
+/* =========================================================
+   FINAL/* =========================================================
+   FINAL
+   ========================================================= */
+function buildFinalScreen(){
+  const pct = Math.round((state.score / state.maxScore) * 100);
+  let level, levelClass, message;
+  if(pct >= 80){
+    level = 'EXPERTO NINJA 🏆'; levelClass = 'level-experto';
+    message = '¡Impresionante, ' + state.student.nombre + '! Dominas las acciones en inglés como un verdadero ninja del MISAELVERSE.';
+  } else if(pct >= 50){
+    level = 'GUERRERO INTERMEDIO ⚡'; levelClass = 'level-intermedio';
+    message = '¡Buen entrenamiento, ' + state.student.nombre + '! Vas por muy buen camino. Repasa un poco más el vocabulario para volverte experto.';
+  } else {
+    level = 'APRENDIZ 🌱'; levelClass = 'level-principiante';
+    message = 'Vas iniciando tu camino ninja, ' + state.student.nombre + '. ¡Entrena de nuevo para subir de nivel!';
+  }
+
+  document.getElementById('final-table').innerHTML = `
+    <tr><td>NOMBRE</td><td>${escapeHtml(state.student.nombre)}</td></tr>
+    <tr><td>CURSO</td><td>${escapeHtml(state.student.curso)}</td></tr>
+    <tr><td>JORNADA</td><td>${escapeHtml(state.student.jornada)}</td></tr>
+    <tr><td>PUNTAJE</td><td>${state.score} / ${state.maxScore} (${pct}%)</td></tr>
+  `;
+  document.getElementById('final-level').innerHTML = '<span class="level-badge ' + levelClass + '">' + level + '</span>';
+
+  const list = document.getElementById('final-concepts');
+  list.innerHTML = '';
+  state.concepts.forEach(c=>{
+    const li = document.createElement('li');
+    li.textContent = '✔ ' + c;
+    list.appendChild(li);
+  });
+
+  document.getElementById('final-message').textContent = message;
+}
+
+/* confeti animado (creado con CSS/JS, sin gifs ni archivos externos) */
+function launchConfetti(){
+  const wrap = document.getElementById('confetti-wrap');
+  const colors = ['#ffb020','#ff3b3b','#39ff88','#ffffff','#ff8fd0'];
+  for(let i=0;i<80;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (2.5 + Math.random()*2) + 's';
+      wrap.appendChild(c);
+      setTimeout(()=>c.remove(), 5000);
+    }, i*30);
+  }
+}
+
+document.getElementById('btn-reiniciar').addEventListener('click', ()=>{
+  state.score = 0;
+  state.concepts = new Set();
+  state.completed = new Set();
+  state.currentStation = 0;
+  showScreen('screen-inicio');
+});
+
+/* =========================================================
+   MÚSICA NINJA DE SIGILO (100% sintetizada con Web Audio,
+   sin archivos externos). Escala pentatónica japonesa (in-sen),
+   dron grave, flauta suave y taiko lejano.
+   ========================================================= */
+const music = {
+  ctx: null, master: null, playing: false, timer: null, step: 0
+};
+// Escala "in" japonesa sobre D: D, Eb, G, A, Bb (frecuencias)
+const NINJA_SCALE = [146.83, 155.56, 196.00, 220.00, 233.08, 293.66, 311.13, 392.00];
+
+function musicInit(){
+  if(music.ctx) return;
+  music.ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  audioCtx = music.ctx;
+  music.master = music.ctx.createGain();
+  music.master.gain.value = 0.16;
+  music.master.connect(music.ctx.destination);
+}
+function pluck(freq, time, dur, vol, type){
+  const c = music.ctx;
+  const o = c.createOscillator();
+  const g = c.createGain();
+  const f = c.createBiquadFilter();
+  f.type = 'lowpass'; f.frequency.value = 1400;
+  o.type = type || 'triangle';
+  o.frequency.value = freq;
+  o.connect(f); f.connect(g); g.connect(music.master);
+  g.gain.setValueAtTime(0.0001, time);
+  g.gain.exponentialRampToValueAtTime(vol, time + 0.03);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+  o.start(time); o.stop(time + dur + 0.05);
+}
+function taiko(time, vol){
+  const c = music.ctx;
+  const o = c.createOscillator();
+  const g = c.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(95, time);
+  o.frequency.exponentialRampToValueAtTime(45, time + 0.25);
+  o.connect(g); g.connect(music.master);
+  g.gain.setValueAtTime(vol, time);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + 0.3);
+  o.start(time); o.stop(time + 0.32);
+}
+function drone(time, dur){
+  const c = music.ctx;
+  [73.42, 110].forEach((f, i)=>{
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = 'sine'; o.frequency.value = f;
+    o.connect(g); g.connect(music.master);
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.linearRampToValueAtTime(i===0 ? 0.09 : 0.05, time + 1.2);
+    g.gain.linearRampToValueAtTime(0.0001, time + dur);
+    o.start(time); o.stop(time + dur + 0.1);
+  });
+}
+function musicLoop(){
+  if(!music.playing) return;
+  const c = music.ctx;
+  const now = c.currentTime + 0.05;
+  const beat = 0.62; // tempo lento, de sigilo
+  const barLen = beat * 8;
+
+  drone(now, barLen + 0.5);
+  // taiko lejano: pulso 1 y 5, a veces un golpe fantasma
+  taiko(now, 0.20);
+  taiko(now + beat*4, 0.14);
+  if(Math.random() < 0.4) taiko(now + beat*6.5, 0.08);
+
+  // melodía pentatónica esparcida, tipo flauta shinobi
+  for(let i=0;i<8;i++){
+    if(Math.random() < 0.45){
+      const n = NINJA_SCALE[Math.floor(Math.random()*NINJA_SCALE.length)];
+      pluck(n, now + beat*i + Math.random()*0.1, beat*1.6, 0.10, 'sine');
+    }
+    // koto/pluck rítmico ocasional más agudo
+    if(Math.random() < 0.25){
+      const n = NINJA_SCALE[2 + Math.floor(Math.random()*6)] * 2;
+      pluck(n, now + beat*i, beat*0.5, 0.05, 'triangle');
+    }
+  }
+  music.step++;
+  music.timer = setTimeout(musicLoop, barLen * 1000);
+}
+function musicStart(){
+  musicInit();
+  if(music.ctx.state === 'suspended') music.ctx.resume();
+  if(music.playing) return;
+  music.playing = true;
+  musicLoop();
+  const b = document.getElementById('btn-music');
+  b.classList.remove('off'); b.textContent = '🔊';
+}
+function musicStop(){
+  music.playing = false;
+  if(music.timer) clearTimeout(music.timer);
+  const b = document.getElementById('btn-music');
+  b.classList.add('off'); b.textContent = '🔇';
+}
+document.getElementById('btn-music').addEventListener('click', ()=>{
+  music.playing ? musicStop() : musicStart();
+});
+// arranca con el primer gesto del usuario (requisito de los navegadores)
+document.getElementById('btn-registrar').addEventListener('click', ()=>{ musicStart(); });
+
+/* =========================================================
+   RETO NINJA - minijuego runner por estación
+   Con: agacharse (estilo dino de Chrome), pistas temáticas
+   diferentes por estación y dificultad progresiva real.
+   ========================================================= */
+const G = {
+  canvas: null, ctx2d: null, running: false, raf: null,
+  station: null, speed: 4, dist: 0, goal: 1200, lives: 3,
+  ninja: null, obstacles: [], particles: [], groundY: 280,
+  spawnTimer: 0, lastTime: 0, invuln: 0, gateX: null,
+  bgItems: [], theme: null, level: 0
+};
+
+/* ---------- PISTAS TEMÁTICAS (una diferente por estación) ---------- */
+const TRACK_THEMES = [
+  {name:'Bosque de Pinos',      sky:['#0b0f1a','#171d33','#241432'], ground:'#11152a', accent:'#39ff88', bg:'trees',    moon:'#ffb020'},
+  {name:'Bambúzal Secreto',     sky:['#07130c','#0e2416','#123320'], ground:'#0a1a10', accent:'#7dff9a', bg:'bamboo',   moon:'#eaffd0'},
+  {name:'Río de la Niebla',     sky:['#0a1220','#122238','#1a3350'], ground:'#0e1a2c', accent:'#6fd6ff', bg:'water',    moon:'#d8f4ff'},
+  {name:'Cueva del Dragón',     sky:['#120a14','#1e1024','#2a1430'], ground:'#170d1c', accent:'#c77dff', bg:'cave',     moon:'#ffd9f5'},
+  {name:'Aldea de Faroles',     sky:['#150d0a','#241511','#331c14'], ground:'#1c110c', accent:'#ff8f4d', bg:'lanterns', moon:'#ffdca8'},
+  {name:'Montaña del Trueno',   sky:['#0c0e16','#151a2c','#1e2440'], ground:'#10131f', accent:'#ffe14d', bg:'peaks',    moon:'#fff6d8'},
+  {name:'Cumbre Nevada',        sky:['#0e1420','#1c2740','#2b3a5c'], ground:'#dfe8f5', accent:'#ffffff', bg:'snow',     moon:'#eaf2ff'},
+  {name:'Pantano Sombrío',      sky:['#0a120c','#13221a','#1a3024'], ground:'#0d1810', accent:'#a3ff6f', bg:'swamp',    moon:'#d5ffc9'},
+  {name:'Desfiladero Rojo',     sky:['#160b0b','#2a1212','#3d1717'], ground:'#1e0e0e', accent:'#ff5c5c', bg:'canyon',   moon:'#ffc9a8'},
+  {name:'Templo en Ruinas',     sky:['#100e16','#1b1826','#262136'], ground:'#141020', accent:'#b8a6ff', bg:'temple',   moon:'#e8e0ff'},
+  {name:'Campos de Arroz',      sky:['#0a1412','#122420','#1a332c'], ground:'#0e1c18', accent:'#6fffd0', bg:'rice',     moon:'#d0fff0'},
+  {name:'Puerto de Linternas',  sky:['#0a0f1c','#131c33','#1c2949'], ground:'#0f1526', accent:'#ffb84d', bg:'harbor',   moon:'#ffe9c2'},
+  {name:'Bosque de Cerezos',    sky:['#140a12','#241222','#331a30'], ground:'#180e16', accent:'#ff9fd0', bg:'sakura',   moon:'#ffe0f0'},
+  {name:'Dojo del Relámpago',   sky:['#0b0b14','#141428','#1e1e3d'], ground:'#101020', accent:'#ffd700', bg:'dojo',     moon:'#fffbe0'}
+];
+
+/* Cada tema define qué obstáculos aparecen y con qué frecuencia */
+const THEME_OBSTACLES = {
+  trees:    ['spike','log','shuriken','rock'],
+  bamboo:   ['spike','spike','shuriken','hawk'],
+  water:    ['log','log','hawk','rock'],
+  cave:     ['rock','rock','spike','hawk','shuriken'],
+  lanterns: ['log','shuriken','hawk','spike'],
+  peaks:    ['rock','spike','hawk','shuriken'],
+  snow:     ['rock','log','hawk','hawk'],
+  swamp:    ['log','spike','hawk','shuriken'],
+  canyon:   ['rock','rock','hawk','spike','shuriken'],
+  temple:   ['spike','rock','hawk','shuriken','log'],
+  rice:     ['log','spike','hawk','hawk','shuriken'],
+  harbor:   ['log','rock','hawk','shuriken','spike'],
+  sakura:   ['spike','shuriken','hawk','rock','log'],
+  dojo:     ['spike','rock','log','hawk','shuriken','hawk']
+};
+
+const OBSTACLE_DEFS = {
+  spike:    {w:26, h:34, color:'#8892b8'},
+  log:      {w:56, h:26, color:'#6b4226'},
+  shuriken: {w:30, h:30, color:'#cfd6f0'},
+  rock:     {w:34, h:30, color:'#4a5170'},
+  hawk:     {w:40, h:24, color:'#d8a04a'}   // halcón: vuela a la altura de la cabeza -> hay que AGACHARSE
+};
+
+function openChallenge(station){
+  G.station = station;
+  G.level = station.id;
+  G.theme = TRACK_THEMES[station.id % TRACK_THEMES.length];
+  G.canvas = document.getElementById('game-canvas');
+  G.ctx2d = G.canvas.getContext('2d');
+
+  /* ----- dificultad progresiva real ----- */
+  G.speed = 3.4 + station.id * 0.45;                 // cada estación notablemente más rápida
+  G.goal  = 950 + station.id * 150;                  // y más larga
+  G.lives = 3;
+  G.dist = 0;
+  G.obstacles = [];
+  G.particles = [];
+  G.gateX = null;
+  G.spawnTimer = 70;
+  G.invuln = 0;
+  G.ninja = { x: 110, y: G.groundY, vy: 0, jumps: 0, w: 34, h: 46, runFrame: 0, duck: false };
+
+  buildBackground();
+
+  document.getElementById('reto-tag').textContent = 'RETO ' + (station.id+1) + ' / ' + stations.length + ' · ' + G.theme.name.toUpperCase();
+  document.getElementById('reto-ov-title').textContent = '🥷 PISTA ' + (station.id+1) + ': ' + G.theme.name;
+  document.getElementById('reto-ov-text').textContent =
+    'Kaito atraviesa "' + G.theme.name + '". SALTA (toque arriba / ESPACIO) los obstáculos del suelo y AGÁCHATE (botón / flecha abajo) para pasar bajo los halcones 🦅. Velocidad nivel ' + (station.id+1) + ' de ' + stations.length + '. ¡Llega a la puerta torii!';
+  document.getElementById('btn-reto-start').textContent = 'COMENZAR ⚡';
+  document.getElementById('reto-overlay').classList.remove('hidden');
+  updateHUD();
+  drawScene();
+  showScreen('screen-reto');
+}
+
+function buildBackground(){
+  G.bgItems = [];
+  for(let i=0;i<10;i++){
+    G.bgItems.push({
+      x: Math.random()*820,
+      h: 50 + Math.random()*100,
+      layer: Math.random() < 0.5 ? 0.3 : 0.6,
+      seed: Math.random()
+    });
+  }
+}
+
+function updateHUD(){
+  document.getElementById('reto-lives').textContent = '❤️'.repeat(G.lives) + '🖤'.repeat(Math.max(0,3-G.lives));
+  const pct = Math.min(100, (G.dist / G.goal) * 100);
+  document.getElementById('reto-progress').style.width = pct + '%';
+  document.getElementById('reto-dist').textContent = Math.floor(G.dist/10) + ' / ' + Math.floor(G.goal/10) + ' m';
+}
+
+document.getElementById('btn-reto-start').addEventListener('click', ()=>{
+  document.getElementById('reto-overlay').classList.add('hidden');
+  playTone('select');
+  musicStart();
+  startRun();
+});
+
+function startRun(){
+  G.running = true;
+  G.lastTime = performance.now();
+  cancelAnimationFrame(G.raf);
+  G.raf = requestAnimationFrame(gameFrame);
+}
+
+/* ---------- CONTROLES: saltar y agacharse ---------- */
+function ninjaJump(){
+  if(!G.running) return;
+  if(G.ninja.duck) return; // agachado no salta, primero se levanta
+  if(G.ninja.jumps < 2){
+    G.ninja.vy = G.ninja.jumps === 0 ? -11.5 : -10;
+    G.ninja.jumps++;
+    playTone('select');
+    for(let i=0;i<6;i++) G.particles.push({
+      x: G.ninja.x, y: G.ninja.y, vx:(Math.random()-0.5)*2, vy: Math.random()*1.5,
+      life: 20, color:'rgba(255,255,255,0.5)', size: 3
+    });
+  }
+}
+function setDuck(on){
+  if(!G.ninja) return;
+  // solo se puede agachar en el suelo; en el aire acelera la caída (como el dino)
+  if(on && G.ninja.y < G.groundY - 2){
+    G.ninja.vy = Math.max(G.ninja.vy, 9);
+  }
+  G.ninja.duck = on;
+}
+
+document.addEventListener('keydown', e=>{
+  if(!document.getElementById('screen-reto').classList.contains('active')) return;
+  if(e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW'){
+    e.preventDefault(); ninjaJump();
+  }
+  if(e.code === 'ArrowDown' || e.code === 'KeyS'){
+    e.preventDefault(); setDuck(true);
+  }
+});
+document.addEventListener('keyup', e=>{
+  if(e.code === 'ArrowDown' || e.code === 'KeyS') setDuck(false);
+});
+
+/* táctil: tocar el canvas = saltar; deslizar hacia abajo = agacharse */
+let touchStartY = null;
+const gcanvas = document.getElementById('game-canvas');
+gcanvas.addEventListener('pointerdown', e=>{
+  e.preventDefault();
+  touchStartY = e.clientY;
+  ninjaJump();
+});
+gcanvas.addEventListener('pointermove', e=>{
+  if(touchStartY !== null && e.clientY - touchStartY > 28){
+    setDuck(true);
+  }
+});
+gcanvas.addEventListener('pointerup', ()=>{ touchStartY = null; setDuck(false); });
+gcanvas.addEventListener('pointercancel', ()=>{ touchStartY = null; setDuck(false); });
+
+/* botones táctiles dedicados */
+const btnJump = document.getElementById('btn-jump');
+const btnDuck = document.getElementById('btn-duck');
+btnJump.addEventListener('pointerdown', e=>{ e.preventDefault(); ninjaJump(); });
+btnDuck.addEventListener('pointerdown', e=>{ e.preventDefault(); btnDuck.classList.add('held'); setDuck(true); });
+['pointerup','pointerleave','pointercancel'].forEach(ev=>{
+  btnDuck.addEventListener(ev, ()=>{ btnDuck.classList.remove('held'); setDuck(false); });
+});
+
+/* ---------- SPAWN DE OBSTÁCULOS con patrones según nivel ---------- */
+function makeObstacle(kind, xOffset){
+  const t = OBSTACLE_DEFS[kind];
+  const ob = {kind, w:t.w, h:t.h, color:t.color, x: 830 + (xOffset||0), rot: 0, flap: Math.random()*10};
+  if(kind === 'shuriken'){
+    ob.y = G.groundY - 40 - Math.random()*50;        // vuela alto: castiga saltos descuidados
+  } else if(kind === 'hawk'){
+    ob.y = G.groundY - 4;                             // altura de la cabeza: OBLIGA a agacharse
+  } else {
+    ob.y = G.groundY + 46 - t.h;                      // apoyado en el suelo: hay que saltar
+  }
+  return ob;
+}
+
+function spawnPattern(){
+  const pool = THEME_OBSTACLES[G.theme.bg];
+  const kind = pool[Math.floor(Math.random()*pool.length)];
+  const lvl = G.level;
+
+  // probabilidad de grupos crece con el nivel
+  const r = Math.random();
+  if(lvl >= 3 && r < 0.18 + lvl*0.02 && kind !== 'hawk'){
+    // doble obstáculo del suelo con separación saltable
+    G.obstacles.push(makeObstacle(kind, 0));
+    G.obstacles.push(makeObstacle(kind, 95 + Math.random()*40));
+  } else if(lvl >= 6 && r < 0.30 && kind !== 'hawk'){
+    // combo: suelo + halcón después -> saltar y luego agacharse
+    G.obstacles.push(makeObstacle(kind, 0));
+    G.obstacles.push(makeObstacle('hawk', 170 + Math.random()*60));
+  } else if(lvl >= 9 && r < 0.42){
+    // triple presión en niveles altos
+    const k2 = pool[Math.floor(Math.random()*pool.length)];
+    G.obstacles.push(makeObstacle(kind, 0));
+    G.obstacles.push(makeObstacle(k2 === 'hawk' ? 'spike' : k2, 110));
+    G.obstacles.push(makeObstacle('hawk', 250));
+  } else {
+    G.obstacles.push(makeObstacle(kind, 0));
+  }
+}
+
+function rectsHit(a, b){
+  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+function ninjaHitbox(){
+  const n = G.ninja;
+  if(n.duck && n.y >= G.groundY - 2){
+    // agachado: la mitad de alto, pegado al suelo
+    return {x: n.x + 4, y: G.groundY + 22, w: n.w - 4, h: 22};
+  }
+  return {x: n.x + 6, y: n.y + 4, w: n.w - 12, h: n.h - 8};
+}
+
+function gameFrame(now){
+  if(!G.running) return;
+  const dt = Math.min(2.5, (now - G.lastTime) / 16.67);
+  G.lastTime = now;
+
+  // física del ninja
+  G.ninja.vy += 0.55 * dt;
+  G.ninja.y += G.ninja.vy * dt;
+  if(G.ninja.y >= G.groundY){
+    G.ninja.y = G.groundY;
+    G.ninja.vy = 0;
+    G.ninja.jumps = 0;
+  }
+  G.ninja.runFrame += 0.25 * dt;
+
+  const sp = G.speed * dt;
+  G.dist += sp;
+  if(G.invuln > 0) G.invuln -= dt;
+
+  // spawn: intervalo se reduce con el nivel => MÁS obstáculos por pista
+  if(G.gateX === null){
+    G.spawnTimer -= dt;
+    if(G.spawnTimer <= 0){
+      spawnPattern();
+      const base = Math.max(26, 62 - G.level * 3.2);
+      G.spawnTimer = base + Math.random()*base*0.8;
+    }
+    if(G.dist >= G.goal) G.gateX = 900;
+  } else {
+    G.gateX -= sp;
+  }
+
+  // mover obstáculos y colisiones
+  const hitbox = ninjaHitbox();
+  for(let i=G.obstacles.length-1;i>=0;i--){
+    const ob = G.obstacles[i];
+    let mult = 1;
+    if(ob.kind === 'shuriken') mult = 1.35;
+    if(ob.kind === 'hawk') mult = 1.15 + G.level * 0.02;
+    ob.x -= sp * mult;
+    ob.rot += 0.3 * dt;
+    ob.flap += 0.35 * dt;
+    if(ob.x + ob.w < -20){ G.obstacles.splice(i,1); continue; }
+    if(G.invuln <= 0 && rectsHit(hitbox, ob)){
+      G.obstacles.splice(i,1);
+      G.lives--;
+      G.invuln = 80;
+      playTone('bad');
+      for(let p=0;p<14;p++) G.particles.push({
+        x: G.ninja.x+15, y: G.ninja.y+20, vx:(Math.random()-0.5)*5, vy:(Math.random()-0.5)*5,
+        life: 28, color:'rgba(255,77,77,0.8)', size: 4
+      });
+      updateHUD();
+      if(G.lives <= 0){ failRun(); return; }
+    }
+  }
+
+  // partículas
+  for(let i=G.particles.length-1;i>=0;i--){
+    const p = G.particles[i];
+    p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt;
+    if(p.life <= 0) G.particles.splice(i,1);
+  }
+
+  // fondo parallax
+  G.bgItems.forEach(t=>{
+    t.x -= sp * t.layer;
+    if(t.x < -80){ t.x = 830 + Math.random()*90; t.h = 50+Math.random()*100; t.seed = Math.random(); }
+  });
+
+  updateHUD();
+  drawScene();
+
+  if(G.gateX !== null && G.gateX <= G.ninja.x + 20){
+    winRun();
+    return;
+  }
+  G.raf = requestAnimationFrame(gameFrame);
+}
+
+function failRun(){
+  G.running = false;
+  cancelAnimationFrame(G.raf);
+  setDuck(false);
+  drawScene();
+  const ov = document.getElementById('reto-overlay');
+  document.getElementById('reto-ov-title').textContent = '💥 ¡Kaito fue descubierto!';
+  document.getElementById('reto-ov-text').textContent = 'Perdiste las 3 vidas en "' + G.theme.name + '". Un verdadero ninja nunca se rinde: inténtalo de nuevo desde el inicio de la pista.';
+  document.getElementById('btn-reto-start').textContent = 'REINTENTAR 🔁';
+  ov.classList.remove('hidden');
+  G.lives = 3; G.dist = 0; G.obstacles = []; G.gateX = null;
+  G.ninja.y = G.groundY; G.ninja.vy = 0; G.ninja.jumps = 0; G.ninja.duck = false;
+  G.spawnTimer = 70; G.invuln = 0;
+  updateHUD();
+}
+
+function winRun(){
+  G.running = false;
+  cancelAnimationFrame(G.raf);
+  setDuck(false);
+  playTone('ok');
+  for(let p=0;p<25;p++) G.particles.push({
+    x: G.ninja.x+15, y: G.ninja.y+10, vx:(Math.random()-0.5)*6, vy:-Math.random()*4,
+    life: 30, color:'rgba(255,176,32,0.9)', size: 4
+  });
+  drawScene();
+  setTimeout(()=>{ openQuestion(G.station); }, 600);
+}
+
+/* ---------- DIBUJO DEL ESCENARIO (cambia según el tema) ---------- */
+function drawScene(){
+  const c = G.ctx2d, W = 800, H = 340;
+  const th = G.theme || TRACK_THEMES[0];
+  c.clearRect(0,0,W,H);
+
+  // cielo con degradado del tema
+  const sky = c.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0, th.sky[0]);
+  sky.addColorStop(0.55, th.sky[1]);
+  sky.addColorStop(1, th.sky[2]);
+  c.fillStyle = sky;
+  c.fillRect(0,0,W,H);
+
+  // luna del tema
+  c.beginPath();
+  c.arc(650, 60, 34, 0, Math.PI*2);
+  const lg = c.createRadialGradient(645,52,5, 650,60,40);
+  lg.addColorStop(0,'#ffffff'); lg.addColorStop(1, th.moon);
+  c.fillStyle = lg; c.fill();
+
+  // montañas de fondo
+  c.fillStyle = 'rgba(0,0,0,0.28)';
+  c.beginPath();
+  c.moveTo(0,220); c.lineTo(120,140); c.lineTo(240,210); c.lineTo(380,120);
+  c.lineTo(520,200); c.lineTo(660,130); c.lineTo(800,190); c.lineTo(800,340); c.lineTo(0,340);
+  c.closePath(); c.fill();
+
+  // decoración parallax según el tema
+  G.bgItems.forEach(t=> drawBgItem(c, t, th));
+
+  // suelo del tema
+  c.fillStyle = th.ground;
+  c.fillRect(0, G.groundY + 46, W, H - G.groundY);
+  c.strokeStyle = th.accent;
+  c.globalAlpha = 0.5;
+  c.lineWidth = 2;
+  c.beginPath(); c.moveTo(0, G.groundY + 46); c.lineTo(W, G.groundY + 46); c.stroke();
+  c.globalAlpha = 1;
+  c.strokeStyle = 'rgba(255,255,255,0.08)';
+  for(let i=0;i<6;i++){
+    const gx = ((i*160) - (G.dist*2 % 160));
+    c.beginPath(); c.moveTo(gx, G.groundY+60); c.lineTo(gx+40, G.groundY+60); c.stroke();
+  }
+
+  // puerta torii (meta)
+  if(G.gateX !== null){
+    const x = G.gateX;
+    c.fillStyle = '#5c1414';
+    c.shadowColor = 'rgba(255,59,59,0.6)'; c.shadowBlur = 18;
+    c.fillRect(x, G.groundY - 60, 12, 106);
+    c.fillRect(x + 76, G.groundY - 60, 12, 106);
+    c.fillRect(x - 12, G.groundY - 72, 112, 12);
+    c.shadowBlur = 0;
+    c.fillStyle = '#4a1010';
+    c.fillRect(x - 2, G.groundY - 48, 92, 9);
+    c.fillStyle = 'rgba(255,176,32,0.9)';
+    c.font = 'bold 13px Arial';
+    c.fillText('META', x + 20, G.groundY - 80);
+  }
+
+  // obstáculos
+  G.obstacles.forEach(ob=> drawObstacle(c, ob));
+
+  // ninja
+  if(!(G.invuln > 0 && Math.floor(G.invuln/6) % 2 === 0)){
+    drawNinja(c, G.ninja);
+  }
+
+  // partículas
+  G.particles.forEach(p=>{
+    c.fillStyle = p.color;
+    c.fillRect(p.x, p.y, p.size, p.size);
+  });
+}
+
+function drawBgItem(c, t, th){
+  const baseY = G.groundY + 46;
+  const a = t.layer < 0.5 ? 0.45 : 0.8;
+  c.globalAlpha = a;
+  switch(th.bg){
+    case 'bamboo':
+      c.fillStyle = '#1d4028';
+      c.fillRect(t.x, baseY - t.h - 30, 9, t.h + 30);
+      c.fillStyle = '#295c38';
+      for(let s=0;s<4;s++) c.fillRect(t.x-1, baseY - 20 - s*(t.h/4), 11, 3);
+      break;
+    case 'water':
+      c.strokeStyle = 'rgba(111,214,255,0.5)';
+      c.lineWidth = 2;
+      c.beginPath();
+      c.arc(t.x, baseY - 8, 14 + t.seed*12, Math.PI, Math.PI*2);
+      c.stroke();
+      break;
+    case 'cave':
+      c.fillStyle = '#241028';
+      c.beginPath();
+      c.moveTo(t.x, 0); c.lineTo(t.x + 14, t.h*0.7); c.lineTo(t.x + 28, 0);
+      c.closePath(); c.fill(); // estalactitas
+      break;
+    case 'lanterns':
+      c.fillStyle = '#2a1a12';
+      c.fillRect(t.x, baseY - t.h, 6, t.h); // poste
+      c.fillStyle = '#ff8f4d';
+      c.shadowColor = '#ff8f4d'; c.shadowBlur = 12;
+      c.beginPath(); c.arc(t.x + 3, baseY - t.h - 8, 8, 0, Math.PI*2); c.fill();
+      c.shadowBlur = 0;
+      break;
+    case 'peaks':
+      c.fillStyle = '#151a2c';
+      c.beginPath();
+      c.moveTo(t.x - 30, baseY); c.lineTo(t.x + 10, baseY - t.h - 40); c.lineTo(t.x + 50, baseY);
+      c.closePath(); c.fill();
+      if(t.seed > 0.7){ // relámpago ocasional
+        c.strokeStyle = 'rgba(255,225,77,0.6)'; c.lineWidth = 2;
+        c.beginPath();
+        c.moveTo(t.x + 10, 20); c.lineTo(t.x, 60); c.lineTo(t.x + 14, 65); c.lineTo(t.x + 2, 110);
+        c.stroke();
+      }
+      break;
+    case 'snow':
+      c.fillStyle = '#3b4a66';
+      c.beginPath();
+      c.moveTo(t.x, baseY); c.lineTo(t.x + 22, baseY - t.h); c.lineTo(t.x + 44, baseY);
+      c.closePath(); c.fill();
+      c.fillStyle = '#eef4ff';
+      c.beginPath();
+      c.moveTo(t.x + 13, baseY - t.h*0.6); c.lineTo(t.x + 22, baseY - t.h); c.lineTo(t.x + 31, baseY - t.h*0.6);
+      c.closePath(); c.fill();
+      c.fillStyle = 'rgba(255,255,255,0.8)';
+      c.fillRect((t.x*3 + G.dist) % 800, (t.seed*300 + G.dist*t.layer) % 320, 3, 3); // copos
+      break;
+    case 'swamp':
+      c.fillStyle = '#16301f';
+      c.beginPath(); c.ellipse(t.x, baseY - 4, 26, 8, 0, 0, Math.PI*2); c.fill();
+      c.strokeStyle = '#2a4a34'; c.lineWidth = 3;
+      c.beginPath(); c.moveTo(t.x, baseY - 6); c.quadraticCurveTo(t.x + 8, baseY - t.h*0.7, t.x + 2, baseY - t.h); c.stroke();
+      break;
+    case 'canyon':
+      c.fillStyle = '#3a1414';
+      c.fillRect(t.x, baseY - t.h - 20, 34, t.h + 20);
+      c.fillStyle = '#4d1c1c';
+      c.fillRect(t.x + 6, baseY - t.h - 34, 22, 14);
+      break;
+    case 'temple':
+      c.fillStyle = '#2a2440';
+      c.fillRect(t.x, baseY - t.h, 14, t.h);       // columna
+      c.fillRect(t.x - 6, baseY - t.h - 10, 26, 10); // capitel
+      if(t.seed > 0.5){ c.fillStyle = '#1d1830'; c.fillRect(t.x + 2, baseY - t.h*0.5, 10, 8); } // grieta
+      break;
+    case 'rice':
+      c.strokeStyle = '#2a5c44'; c.lineWidth = 2;
+      for(let s=0;s<3;s++){
+        c.beginPath();
+        c.moveTo(t.x + s*8, baseY);
+        c.quadraticCurveTo(t.x + s*8 + 4, baseY - 20 - t.seed*14, t.x + s*8 + 8, baseY - 26 - t.seed*14);
+        c.stroke();
+      }
+      break;
+    case 'harbor':
+      c.fillStyle = '#1c2949';
+      c.fillRect(t.x, baseY - 14, 40, 6); // muelle
+      c.fillRect(t.x + 4, baseY - 8, 5, 8);
+      c.fillRect(t.x + 30, baseY - 8, 5, 8);
+      c.fillStyle = '#ffb84d';
+      c.shadowColor = '#ffb84d'; c.shadowBlur = 10;
+      c.beginPath(); c.arc(t.x + 20, baseY - 24, 5, 0, Math.PI*2); c.fill();
+      c.shadowBlur = 0;
+      break;
+    case 'sakura':
+      c.fillStyle = '#3a2030';
+      c.fillRect(t.x + 10, baseY - t.h*0.6, 7, t.h*0.6);
+      c.fillStyle = '#ff9fd0';
+      c.beginPath(); c.arc(t.x + 13, baseY - t.h*0.6 - 12, 18 + t.seed*8, 0, Math.PI*2); c.fill();
+      c.fillStyle = 'rgba(255,159,208,0.8)';
+      c.fillRect((t.x*2 + G.dist*0.8) % 800, (t.seed*280 + G.dist*0.5) % 320, 4, 4); // pétalos
+      break;
+    case 'dojo':
+      c.fillStyle = '#1e1e3d';
+      c.fillRect(t.x, baseY - t.h, 44, t.h);
+      c.fillStyle = '#2c2c55';
+      c.beginPath();
+      c.moveTo(t.x - 8, baseY - t.h); c.lineTo(t.x + 22, baseY - t.h - 24); c.lineTo(t.x + 52, baseY - t.h);
+      c.closePath(); c.fill();
+      c.fillStyle = '#ffd700';
+      c.fillRect(t.x + 18, baseY - t.h + 8, 8, 12); // puerta iluminada
+      break;
+    default: // trees
+      c.fillStyle = '#05060a';
+      c.beginPath();
+      c.moveTo(t.x, baseY);
+      c.lineTo(t.x + 22, baseY - t.h);
+      c.lineTo(t.x + 44, baseY);
+      c.closePath(); c.fill();
+  }
+  c.globalAlpha = 1;
+}
+
+function drawObstacle(c, ob){
+  if(ob.kind === 'shuriken'){
+    c.save();
+    c.translate(ob.x + ob.w/2, ob.y + ob.h/2);
+    c.rotate(ob.rot);
+    c.fillStyle = ob.color;
+    for(let k=0;k<4;k++){
+      c.rotate(Math.PI/2);
+      c.beginPath();
+      c.moveTo(0,0); c.lineTo(14,4); c.lineTo(4,14);
+      c.closePath(); c.fill();
+    }
+    c.fillStyle = '#ff3b3b';
+    c.beginPath(); c.arc(0,0,4,0,Math.PI*2); c.fill();
+    c.restore();
+  } else if(ob.kind === 'hawk'){
+    // halcón: cuerpo + alas que aletean; pasa a la altura de la cabeza
+    const wingY = Math.sin(ob.flap) * 10;
+    c.save();
+    c.translate(ob.x + ob.w/2, ob.y + ob.h/2);
+    c.fillStyle = ob.color;
+    c.beginPath(); c.ellipse(0, 0, 15, 8, 0, 0, Math.PI*2); c.fill(); // cuerpo
+    c.fillStyle = '#b07c2e';
+    c.beginPath(); // ala
+    c.moveTo(-2, 0); c.lineTo(-14, -12 + wingY); c.lineTo(6, -2);
+    c.closePath(); c.fill();
+    c.fillStyle = '#8a5f20';
+    c.beginPath(); // cola
+    c.moveTo(12, 0); c.lineTo(22, -4); c.lineTo(22, 4);
+    c.closePath(); c.fill();
+    c.fillStyle = '#ffd24d'; // pico
+    c.beginPath(); c.moveTo(-15, 0); c.lineTo(-22, 2); c.lineTo(-15, 4); c.closePath(); c.fill();
+    c.fillStyle = '#0b0f1a';
+    c.beginPath(); c.arc(-10, -2, 2, 0, Math.PI*2); c.fill(); // ojo
+    c.restore();
+  } else if(ob.kind === 'spike'){
+    c.fillStyle = ob.color;
+    const n = 3;
+    for(let k=0;k<n;k++){
+      const sx = ob.x + k*(ob.w/n);
+      c.beginPath();
+      c.moveTo(sx, ob.y + ob.h);
+      c.lineTo(sx + (ob.w/n)/2, ob.y);
+      c.lineTo(sx + ob.w/n, ob.y + ob.h);
+      c.closePath(); c.fill();
+    }
+  } else if(ob.kind === 'log'){
+    c.fillStyle = ob.color;
+    c.beginPath();
+    c.roundRect(ob.x, ob.y, ob.w, ob.h, 10);
+    c.fill();
+    c.strokeStyle = '#8a5a34'; c.lineWidth = 2;
+    c.beginPath(); c.arc(ob.x + ob.w - 12, ob.y + ob.h/2, 7, 0, Math.PI*2); c.stroke();
+  } else { // rock
+    c.fillStyle = ob.color;
+    c.beginPath();
+    c.moveTo(ob.x, ob.y + ob.h);
+    c.lineTo(ob.x + 6, ob.y + 8);
+    c.lineTo(ob.x + ob.w/2, ob.y);
+    c.lineTo(ob.x + ob.w - 4, ob.y + 10);
+    c.lineTo(ob.x + ob.w, ob.y + ob.h);
+    c.closePath(); c.fill();
+  }
+}
+
+function drawNinja(c, n){
+  const x = n.x;
+  const inAir = n.y < G.groundY - 2;
+  const ducking = n.duck && !inAir;
+
+  if(ducking){
+    /* ---- versión agachada (rodando bajo el halcón) ---- */
+    const y = G.groundY + 18;
+    c.save();
+    // bufanda
+    c.strokeStyle = '#ff3b3b'; c.lineWidth = 4;
+    c.beginPath();
+    c.moveTo(x + 6, y + 6);
+    c.quadraticCurveTo(x - 8, y + 4 + Math.sin(n.runFrame*2)*2, x - 18, y + 8);
+    c.stroke();
+    // cuerpo compacto
+    c.fillStyle = '#1c2237';
+    c.beginPath(); c.roundRect(x + 2, y + 8, 30, 16, 7); c.fill();
+    // cabeza adelante y abajo
+    c.fillStyle = '#232a45';
+    c.beginPath(); c.arc(x + 28, y + 6, 10, 0, Math.PI*2); c.fill();
+    c.fillStyle = '#f1d9b5';
+    c.fillRect(x + 24, y + 2, 12, 5);
+    c.fillStyle = '#0b0f1a';
+    c.fillRect(x + 28, y + 3, 3, 3);
+    c.fillRect(x + 33, y + 3, 3, 3);
+    // cinturón
+    c.fillStyle = '#ffb020';
+    c.fillRect(x + 2, y + 16, 30, 3);
+    // piernas flexionadas
+    c.strokeStyle = '#1c2237'; c.lineWidth = 5; c.lineCap = 'round';
+    const legSwing = Math.sin(n.runFrame*1.5) * 5;
+    c.beginPath(); c.moveTo(x + 8, y + 22); c.lineTo(x + 4 - legSwing, y + 28); c.stroke();
+    c.beginPath(); c.moveTo(x + 18, y + 22); c.lineTo(x + 22 + legSwing, y + 28); c.stroke();
+    c.restore();
+    return;
+  }
+
+  /* ---- versión de pie / en el aire ---- */
+  const y = n.y;
+  const legSwing = Math.sin(n.runFrame) * 8;
+  c.save();
+  c.strokeStyle = '#ff3b3b'; c.lineWidth = 4;
+  c.beginPath();
+  c.moveTo(x + 8, y + 10);
+  c.quadraticCurveTo(x - 10, y + 8 + Math.sin(n.runFrame*2)*3, x - 20, y + 12);
+  c.stroke();
+
+  c.fillStyle = '#1c2237';
+  c.beginPath(); c.roundRect(x + 6, y + 12, 22, 22, 5); c.fill();
+
+  c.fillStyle = '#232a45';
+  c.beginPath(); c.arc(x + 17, y + 6, 11, 0, Math.PI*2); c.fill();
+  c.fillStyle = '#f1d9b5';
+  c.fillRect(x + 12, y + 2, 13, 5);
+  c.fillStyle = '#0b0f1a';
+  c.fillRect(x + 16, y + 3, 3, 3);
+  c.fillRect(x + 22, y + 3, 3, 3);
+
+  c.fillStyle = '#ffb020';
+  c.fillRect(x + 6, y + 24, 22, 3);
+
+  c.strokeStyle = '#1c2237'; c.lineWidth = 5; c.lineCap = 'round';
+  if(inAir){
+    c.beginPath(); c.moveTo(x + 12, y + 33); c.lineTo(x + 6, y + 40); c.stroke();
+    c.beginPath(); c.moveTo(x + 22, y + 33); c.lineTo(x + 28, y + 38); c.stroke();
+  } else {
+    c.beginPath(); c.moveTo(x + 12, y + 33); c.lineTo(x + 12 - legSwing, y + 46); c.stroke();
+    c.beginPath(); c.moveTo(x + 22, y + 33); c.lineTo(x + 22 + legSwing, y + 46); c.stroke();
+  }
+
+  c.strokeStyle = '#8892b8'; c.lineWidth = 3;
+  c.beginPath(); c.moveTo(x + 8, y + 12); c.lineTo(x + 30, y - 2); c.stroke();
+  c.fillStyle = '#ffb020';
+  c.fillRect(x + 27, y - 6, 5, 5);
+  c.restore();
+}
+
+</script>
+</body>
+</html>
